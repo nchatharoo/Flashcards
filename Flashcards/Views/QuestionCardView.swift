@@ -35,7 +35,7 @@ struct QuestionCardView: View {
                                 )
                             }
                         }
-                        .padding(.horizontal)
+                        .padding([.horizontal, .bottom])
                         
                         if viewModel.showAnswer {
                             Text(question.explanation)
@@ -45,11 +45,14 @@ struct QuestionCardView: View {
                                 .transition(.opacity)
                         }
                     }
+                    .background(Color.red)
+                    .cornerRadius(16)
+                    .shadow(radius: 5)
                     .frame(width: geometry.size.width, height: geometry.size.height)
                     .tag(index)
                 }
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            .tabViewStyle(.page(indexDisplayMode: .automatic))
         }
     }
 }
