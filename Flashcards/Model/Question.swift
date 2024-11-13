@@ -23,6 +23,8 @@ struct Question: Codable, Identifiable {
         case sorting
         case searching
         case dynamicProgramming = "dynamicProgramming"
+        case heaps
+        case dataStructures
         case hashTables = "hashTables"
     }
     
