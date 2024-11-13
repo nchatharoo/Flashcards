@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct Question: Codable, Identifiable {
-    let id: String
+public struct Question: Codable, Identifiable, Equatable {
+    public let id: String
     let question: String
     let options: [String]
     let correctAnswer: Int
