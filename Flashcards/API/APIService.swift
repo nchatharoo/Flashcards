@@ -9,7 +9,7 @@ import Foundation
 
 class APIService {
     static let shared = APIService()
-    private let baseURL = "https://gist.githubusercontent.com/nchatharoo/99825731ee553c6b2d0998d768f980f0/raw/2cfc2a2479e1fe54cd4640230c8fafbc704f809a/questions.json"
+    private let baseURL = "https://gist.githubusercontent.com/nchatharoo/99825731ee553c6b2d0998d768f980f0/raw/024616e45dec166593d6f1c6aa39fc7350c97b66/questions.json"
 
     func fetchQuestions() async throws -> [Question] {
         guard let url = URL(string: baseURL) else {
