@@ -12,10 +12,10 @@ import SwiftUI
 class QuestionViewModel: ObservableObject {
     @Published var questions: [Question] = []
     @Published var currentIndex = 0
-    @Published var showAnswer = false
-    @Published var selectedAnswer: Int?
     @Published var isLoading = false
     @Published var error: Error?
+    @Published var selectedAnswers: [String: Int] = [:]
+    @Published var answeredQuestions: Set<String> = []
     
     var currentQuestion: Question? {
         guard questions.indices.contains(currentIndex) else { return nil }
@@ -52,8 +52,20 @@ class QuestionViewModel: ObservableObject {
     }
     
     private func resetQuestion() {
-        showAnswer = false
-        selectedAnswer = nil
+        if let currentQuestion = currentQuestion {
+            answeredQuestions.remove(currentQuestion.id)
+        }
+    }
+
+    func selectAnswer(for questionId: String, answerIndex: Int) {
+        withAnimation {
+            selectedAnswers[questionId] = answerIndex
+            answeredQuestions.insert(questionId)
+        }
+    }
+    
+    func shouldShowAnswer(for questionId: String) -> Bool {
+        return answeredQuestions.contains(questionId)
     }
 }
 
