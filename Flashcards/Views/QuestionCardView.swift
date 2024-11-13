@@ -12,7 +12,8 @@ struct QuestionCardView: View {
     
     var body: some View {
         VStack {
-            GeometryReader { geometry in
+            GeometryReader { geometry
+                in
                 TabView(selection: $viewModel.currentIndex) {
                     ForEach(Array(viewModel.questions.enumerated()), id: \.element.id) { index, question in
                         VStack(spacing: 20) {
@@ -45,9 +46,6 @@ struct QuestionCardView: View {
                             }
                         }
                         .frame(width: geometry.size.width, height: geometry.size.height)
-                        .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
-                        .cornerRadius(16)
-                        .shadow(radius: 5)
                         .tag(index)
                     }
                 }
@@ -58,4 +56,5 @@ struct QuestionCardView: View {
 }
 #Preview {
     QuestionCardView(viewModel: .preview)
+        .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
 }
