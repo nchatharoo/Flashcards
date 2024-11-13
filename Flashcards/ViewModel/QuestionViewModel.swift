@@ -10,12 +10,18 @@ import SwiftUI
 
 @MainActor
 class QuestionViewModel: ObservableObject {
+    private let service: APIServiceProtocol
+
     @Published var questions: [Question] = []
     @Published var currentIndex = 0
     @Published var isLoading = false
     @Published var error: Error?
     @Published var selectedAnswers: [String: Int] = [:]
     @Published var answeredQuestions: Set<String> = []
+    
+    init(service: APIServiceProtocol = APIService.shared) {
+        self.service = service
+    }
     
     var currentQuestion: Question? {
         guard questions.indices.contains(currentIndex) else { return nil }
@@ -25,7 +31,7 @@ class QuestionViewModel: ObservableObject {
     func loadQuestions() async {
         isLoading = true
         do {
-            questions = try await APIService.shared.fetchQuestions()
+            questions = try await service.fetchQuestions()
             isLoading = false
         } catch {
             self.error = error

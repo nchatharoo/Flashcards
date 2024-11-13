@@ -7,7 +7,11 @@
 
 import Foundation
 
-class APIService {
+public protocol APIServiceProtocol {
+    func fetchQuestions() async throws -> [Question]
+}
+
+class APIService: APIServiceProtocol {
     static let shared = APIService()
     private let baseURL = "https://gist.githubusercontent.com/nchatharoo/99825731ee553c6b2d0998d768f980f0/raw/024616e45dec166593d6f1c6aa39fc7350c97b66/questions.json"
 
