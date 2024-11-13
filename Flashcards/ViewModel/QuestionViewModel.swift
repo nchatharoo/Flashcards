@@ -37,7 +37,6 @@ class QuestionViewModel: ObservableObject {
         withAnimation(.spring()) {
             if currentIndex < questions.count - 1 {
                 currentIndex += 1
-                resetQuestion()
             }
         }
     }
@@ -46,14 +45,7 @@ class QuestionViewModel: ObservableObject {
         withAnimation(.spring()) {
             if currentIndex > 0 {
                 currentIndex -= 1
-                resetQuestion()
             }
-        }
-    }
-    
-    private func resetQuestion() {
-        if let currentQuestion = currentQuestion {
-            answeredQuestions.remove(currentQuestion.id)
         }
     }
 
