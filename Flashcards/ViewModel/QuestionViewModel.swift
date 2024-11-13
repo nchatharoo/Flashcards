@@ -65,6 +65,15 @@ class QuestionViewModel: ObservableObject {
     func shouldShowAnswer(for questionId: String) -> Bool {
         return answeredQuestions.contains(questionId)
     }
+    
+    func calculateScore() -> (correct: Int, total: Int) {
+        let correctAnswers = selectedAnswers.filter { questionId, selectedIndex in
+            guard let question = questions.first(where: { $0.id == questionId }) else { return false }
+            return selectedIndex == question.correctAnswer
+        }.count
+
+        return (correctAnswers, selectedAnswers.count)
+    }
 }
 
 extension QuestionViewModel {
