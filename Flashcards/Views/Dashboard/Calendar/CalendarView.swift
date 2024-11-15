@@ -25,10 +25,10 @@ struct CalendarView: View {
             HeaderView(currentMonthAndYear: currentMonthAndYear(), animation: animation)
                 .padding()
             
+            WeekdayHeaderView(calendar: calendar)
+                .padding(.horizontal)
+            
             if isExpanded {
-                WeekdayHeaderView(calendar: calendar)
-                    .padding(.horizontal)
-                
                 DaysGridView(currentMonthDates: currentMonthDates, calendar: calendar, animation: animation)
                     .padding(.horizontal)
             } else {
@@ -56,19 +56,24 @@ struct CalendarView: View {
     
     private func getRecentDays() -> [Date] {
         let today = Date()
+        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: today)
+        let startOfWeek = calendar.date(from: components) ?? today
+        let sunday = calendar.date(byAdding: .weekday, value: -(calendar.component(.weekday, from: startOfWeek) - 1), to: startOfWeek) ?? today
+        
         var days: [Date] = []
-        for i in -3...3 {
-            if let newDate = calendar.date(byAdding: .day, value: i, to: today) {
+        for i in 0..<7 {
+            if let newDate = calendar.date(byAdding: .day, value: i, to: sunday) {
                 days.append(newDate)
             }
         }
+        
         return days
     }
 }
 
 #Preview {
     @Previewable @Namespace var animation
-    CalendarView(isExpanded: .constant(true), animation: animation)
+    CalendarView(isExpanded: .constant(false), animation: animation)
         .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
 
 }
