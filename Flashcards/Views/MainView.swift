@@ -14,14 +14,15 @@ struct MainView: View {
         NavigationStack {
             TabView {
                 Tab("Dashboard", systemImage: "calendar") {
-                    DashboardView()
-                    
+                    DashboardView(viewModel: viewModel)
                 }
                 
                 Tab("Quiz", systemImage: "questionmark.circle") {
                     QuestionCardView(viewModel: viewModel)
                 }
             }
+            .navigationTitle("Welcome champ !")
+            .navigationBarTitleDisplayMode(.large)
         }
         .task {
             await viewModel.loadQuestions()
