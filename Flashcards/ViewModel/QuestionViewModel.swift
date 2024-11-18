@@ -67,12 +67,38 @@ class QuestionViewModel: ObservableObject {
     }
     
     func calculateScore() -> (correct: Int, total: Int) {
-        let correctAnswers = selectedAnswers.filter { questionId, selectedIndex in
-            guard let question = questions.first(where: { $0.id == questionId }) else { return false }
-            return selectedIndex == question.correctAnswer
-        }.count
+        let scoreByCategory = calculateScoreByCategory()
 
-        return (correctAnswers, selectedAnswers.count)
+        // Agrégation des scores de toutes les catégories
+        let correctAnswers = scoreByCategory.values.reduce(0) { $0 + $1.correct }
+        let totalQuestions = scoreByCategory.values.reduce(0) { $0 + $1.total }
+
+        return (correctAnswers, totalQuestions)
+    }
+    
+    func calculateScoreByCategory() -> [Question.Category: (correct: Int, total: Int)] {
+        var scoreByCategory: [Question.Category: (correct: Int, total: Int)] = [:]
+        
+        // Initialisation du score de chaque catégorie
+        for category in Question.Category.allCases {
+            scoreByCategory[category] = (correct: 0, total: 0)
+        }
+
+        // Parcours des questions et calcul des scores par catégorie
+        for question in questions {
+            let category = question.category
+            if let selectedIndex = selectedAnswers[question.id] {
+                // Incrémente le total des questions pour cette catégorie
+                scoreByCategory[category]?.total += 1
+                
+                // Vérifie si la réponse est correcte et incrémente les bonnes réponses
+                if selectedIndex == question.correctAnswer {
+                    scoreByCategory[category]?.correct += 1
+                }
+            }
+        }
+
+        return scoreByCategory
     }
 }
 
