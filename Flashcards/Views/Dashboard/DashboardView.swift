@@ -10,6 +10,7 @@ import SwiftUI
 struct DashboardView: View {
     @Namespace private var animation
     @State private var isExpanded = true
+    @ObservedObject var viewModel: QuestionViewModel
 
     var body: some View {
         NavigationStack {
@@ -34,25 +35,28 @@ struct DashboardView: View {
                                 .frame(height: 480)
                             
                             VStack(spacing: 20) {
-                                ForEach(1...10, id: \.self) { index in
-                                    Text("Contenu \(index)")
-                                        .frame(maxWidth: .infinity)
-                                        .padding()
-                                        .background(Color.blue.opacity(0.1))
-                                        .cornerRadius(8)
+                                ForEach(Question.Category.allCases, id: \.self) { category in
+                                    ProgressBarView(
+                                        category: category,
+                                        score: viewModel.calculateScoreByCategory()[category] ?? (correct: 0, total: 0)
+                                    )
                                 }
                             }
                             .padding()
                         }
                     }
                 
-                CalendarView(isExpanded: $isExpanded, animation: animation)
-                    .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 150)
-                    .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
-                    .cornerRadius(16)
-                    .shadow(radius: 8)
-                    .padding()
-                    .zIndex(1)
+                ZStack(alignment: .top) {
+                    Color(#colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1))
+                        .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 150)
+                    CalendarView(isExpanded: $isExpanded, animation: animation)
+                        .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 150)
+                        .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
+                        .cornerRadius(16)
+                        .shadow(radius: 8)
+                        .padding()
+                        .zIndex(1)
+                }
             }
         }
     }
@@ -68,5 +72,6 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
 }
 
 #Preview {
-    DashboardView()
+    let viewModel = QuestionViewModel.preview
+    DashboardView(viewModel: viewModel)
 }
