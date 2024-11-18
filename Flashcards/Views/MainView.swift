@@ -13,19 +13,18 @@ struct MainView: View {
     var body: some View {
         NavigationStack {
             TabView {
-                DashboardView()
-                    .tabItem {
-                        Label("Dashboard", systemImage: "calendar")
-                    }
+                Tab("Dashboard", systemImage: "calendar") {
+                    DashboardView()
+                    
+                }
                 
-                QuestionCardView(viewModel: viewModel)
-                    .tabItem {
-                        Label("Quiz", systemImage: "questionmark.circle")
-                    }
-                    .task {
-                        await viewModel.loadQuestions()
-                    }
+                Tab("Quiz", systemImage: "questionmark.circle") {
+                    QuestionCardView(viewModel: viewModel)
+                }
             }
+        }
+        .task {
+            await viewModel.loadQuestions()
         }
     }
 }
