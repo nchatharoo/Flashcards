@@ -55,7 +55,7 @@ struct DashboardView: View {
                         .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 150)
                     CalendarView(isExpanded: $isExpanded, animation: animation)
                         .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 150)
-                        .background(colorScheme == .dark ? Color(#colorLiteral(red: 0.6705882353, green: 0.8196078431, blue: 0.7764705882, alpha: 1)) : Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
+                        .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
                         .cornerRadius(16)
                         .shadow(radius: 8)
                         .padding()
