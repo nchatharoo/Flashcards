@@ -50,11 +50,10 @@ struct DashboardView: View {
                 
                 ZStack {
                     Color(colorScheme == .dark ? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) : #colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1))
-                        .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 200)
+                        .frame(maxHeight: isExpanded ? 450 : 200)
                     CalendarView(isExpanded: $isExpanded, animation: animation)
                 }
             }
-            .padding(.horizontal, 20)
         }
     }
 }

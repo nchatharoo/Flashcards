@@ -29,12 +29,14 @@ struct ProgressBarView: View {
             }
             .animation(.easeInOut, value: score.correct)
         }
+        .padding(.horizontal, 20)
     }
     
     private func progressWidth() -> CGFloat {
         guard score.total > 0 else { return 0 }
         let percentage = Double(score.correct) / Double(score.total)
-        return CGFloat(percentage) * UIScreen.main.bounds.width * 1
+        let availableWidth = UIScreen.main.bounds.width - 40
+        return CGFloat(percentage) * availableWidth
     }
 }
 

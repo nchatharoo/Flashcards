@@ -10,7 +10,6 @@ import SwiftUI
 struct DayView: View {
     var date: Date
     var calendar: Calendar
-    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         VStack {

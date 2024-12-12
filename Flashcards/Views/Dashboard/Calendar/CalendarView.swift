@@ -36,7 +36,7 @@ struct CalendarView: View {
                     .padding(.horizontal)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 150)
+        .frame(maxHeight: isExpanded ? 450 : 150)
         .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
         .cornerRadius(16)
         .shadow(radius: 8)

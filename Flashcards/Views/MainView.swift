@@ -15,6 +15,8 @@ struct MainView: View {
             TabView {
                 Tab("Dashboard", systemImage: "calendar") {
                     DashboardView(viewModel: viewModel)
+                        .padding(.horizontal, 20)
+
                 }
                 
                 Tab("Quiz", systemImage: "questionmark.circle") {
