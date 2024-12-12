@@ -11,6 +11,7 @@ struct DaysGridView: View {
     var currentMonthDates: [Date]
     var calendar: Calendar
     var animation: Namespace.ID
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 10) {
@@ -22,6 +23,7 @@ struct DaysGridView: View {
             ForEach(0..<((weekdayOffset + 8) % 7), id: \.self) { _ in
                 Text("")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .foregroundColor(Color(colorScheme == .dark ? Color(#colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1)) : (Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))))
             }
             
             // Ajouter les jours du mois

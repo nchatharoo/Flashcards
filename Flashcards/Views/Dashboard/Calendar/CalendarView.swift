@@ -73,7 +73,9 @@ struct CalendarView: View {
 
 #Preview {
     @Previewable @Namespace var animation
+    @Previewable @Environment(\.colorScheme) var colorScheme
+
     CalendarView(isExpanded: .constant(false), animation: animation)
-        .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
+        .background(colorScheme == .dark ? Color(#colorLiteral(red: 0.6705882353, green: 0.8196078431, blue: 0.7764705882, alpha: 1)) : Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
 
 }

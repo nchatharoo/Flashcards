@@ -10,11 +10,12 @@ import SwiftUI
 struct HeaderView: View {
     var currentMonthAndYear: String
     var animation: Namespace.ID
-    
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         HStack {
             Text(currentMonthAndYear)
-                .foregroundStyle(Color(#colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1)))
+                .foregroundColor(Color(colorScheme == .light ? Color(#colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1)) : (Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))))
                 .font(.title2)
                 .bold()
                 .padding(.leading, 10)

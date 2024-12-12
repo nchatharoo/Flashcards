@@ -11,6 +11,7 @@ struct DashboardView: View {
     @Namespace private var animation
     @State private var isExpanded = true
     @ObservedObject var viewModel: QuestionViewModel
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         NavigationStack {
@@ -20,11 +21,13 @@ struct DashboardView: View {
                             // Vue Intermédiaire qui agit comme une "barrière" pour le calendrier
                             Color.clear
                                 .frame(height: isExpanded ? 300 : 0) // Ajuste la hauteur pour créer la "barrière"
-                                .background(GeometryReader { geometry in
-                                    Color.clear.preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .global).minY)
+                                .background(alignment: .top, content: {
+                                    GeometryReader { geometry in
+                                        Color.clear.preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .global).minY)
+                                    }
                                 })
                                 .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
-                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 1)) {
                                         if value < 100 {
                                             isExpanded = false
                                         } else {
@@ -45,13 +48,14 @@ struct DashboardView: View {
                             .padding()
                         }
                     }
+                    .scrollBounceBehavior(ScrollBounceBehavior.basedOnSize)
                 
                 ZStack(alignment: .top) {
-                    Color(#colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1))
+                    Color(colorScheme == .dark ? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) : #colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1))
                         .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 150)
                     CalendarView(isExpanded: $isExpanded, animation: animation)
                         .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 150)
-                        .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
+                        .background(colorScheme == .dark ? Color(#colorLiteral(red: 0.6705882353, green: 0.8196078431, blue: 0.7764705882, alpha: 1)) : Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
                         .cornerRadius(16)
                         .shadow(radius: 8)
                         .padding()
