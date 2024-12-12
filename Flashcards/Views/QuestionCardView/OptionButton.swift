@@ -19,7 +19,7 @@ struct OptionButton: View {
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(backgroundColor)
-                .foregroundColor(isSelected ? .white : Color(#colorLiteral(red: 0, green: 0.1550326347, blue: 0.1517512798, alpha: 1)))
+                .foregroundStyle(isSelected ? .white : Color(#colorLiteral(red: 0, green: 0.1550326347, blue: 0.1517512798, alpha: 1)))
                 .cornerRadius(10)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)

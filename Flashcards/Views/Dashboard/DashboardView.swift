@@ -18,9 +18,8 @@ struct DashboardView: View {
             ZStack(alignment: .top) {
                     ScrollView {
                         VStack(spacing: 0) {
-                            // Vue Intermédiaire qui agit comme une "barrière" pour le calendrier
                             Color.clear
-                                .frame(height: isExpanded ? 300 : 0) // Ajuste la hauteur pour créer la "barrière"
+                                .frame(height: isExpanded ? 300 : 0)
                                 .background(alignment: .top, content: {
                                     GeometryReader { geometry in
                                         Color.clear.preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .global).minY)
@@ -45,23 +44,17 @@ struct DashboardView: View {
                                     )
                                 }
                             }
-                            .padding()
                         }
                     }
-                    .scrollBounceBehavior(ScrollBounceBehavior.basedOnSize)
+                    .scrollIndicators(.never)
                 
-                ZStack(alignment: .top) {
+                ZStack {
                     Color(colorScheme == .dark ? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) : #colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1))
-                        .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 150)
+                        .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 200)
                     CalendarView(isExpanded: $isExpanded, animation: animation)
-                        .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 150)
-                        .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
-                        .cornerRadius(16)
-                        .shadow(radius: 8)
-                        .padding()
-                        .zIndex(1)
                 }
             }
+            .padding(.horizontal, 20)
         }
     }
 }

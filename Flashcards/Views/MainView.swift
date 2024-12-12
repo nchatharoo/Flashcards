@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
-    @StateObject private var viewModel = QuestionViewModel()
+    @StateObject private var viewModel = ViewModelFactory.makeQuestionViewModel()
     
     var body: some View {
         NavigationStack {
@@ -27,6 +27,18 @@ struct MainView: View {
         .task {
             await viewModel.loadQuestions()
         }
+    }
+}
+
+enum ViewModelFactory {
+    @MainActor static func makeQuestionViewModel() -> QuestionViewModel {
+        let questionRepo = RemoteQuestionRepository(service: APIService.shared)
+        let answerRepo = LocalAnswerRepository(storage: LocalStorage.shared)
+        let useCases = QuestionUseCases(
+            questionRepository: questionRepo,
+            answerRepository: answerRepo
+        )
+        return QuestionViewModel(useCases: useCases)
     }
 }
 

@@ -36,7 +36,12 @@ struct CalendarView: View {
                     .padding(.horizontal)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: isExpanded ? 450 : 150)
+        .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
+        .cornerRadius(16)
+        .shadow(radius: 8)
         .padding()
+        .zIndex(1)
     }
     
     private static func generateCurrentMonthDates() -> [Date] {
@@ -49,7 +54,6 @@ struct CalendarView: View {
     }
     
     private func currentMonthAndYear() -> String {
-        let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
         return formatter.string(from: Date())
     }

@@ -10,7 +10,7 @@ import SwiftUI
 
 @MainActor
 class QuestionViewModel: ObservableObject {
-    private let service: APIServiceProtocol
+    private let useCases: QuestionUseCases
 
     @Published var questions: [Question] = []
     @Published var currentIndex = 0
@@ -19,8 +19,11 @@ class QuestionViewModel: ObservableObject {
     @Published var selectedAnswers: [String: Int] = [:]
     @Published var answeredQuestions: Set<String> = []
     
-    init(service: APIServiceProtocol = APIService.shared) {
-        self.service = service
+    init(useCases: QuestionUseCases) {
+        self.useCases = useCases
+        Task {
+            await loadSavedAnswers()
+        }
     }
     
     var currentQuestion: Question? {
@@ -31,13 +34,19 @@ class QuestionViewModel: ObservableObject {
     func loadQuestions() async {
         isLoading = true
         do {
-            questions = try await service.fetchQuestions()
+            questions = try await useCases.fetchQuestions()
             isLoading = false
         } catch {
             self.error = error
             isLoading = false
         }
     }
+
+    private func loadSavedAnswers() async {
+        let saved = await useCases.loadSavedAnswers()
+        self.selectedAnswers = saved.selectedAnswers
+        self.answeredQuestions = saved.answeredQuestions
+    }    
     
     func nextQuestion() {
         withAnimation(.spring()) {
@@ -59,6 +68,12 @@ class QuestionViewModel: ObservableObject {
         withAnimation {
             selectedAnswers[questionId] = answerIndex
             answeredQuestions.insert(questionId)
+            Task {
+                await useCases.saveAnswer(
+                    selectedAnswers: selectedAnswers,
+                    answeredQuestions: answeredQuestions
+                )
+            }
         }
     }
     
@@ -69,7 +84,6 @@ class QuestionViewModel: ObservableObject {
     func calculateScore() -> (correct: Int, total: Int) {
         let scoreByCategory = calculateScoreByCategory()
 
-        // Agrégation des scores de toutes les catégories
         let correctAnswers = scoreByCategory.values.reduce(0) { $0 + $1.correct }
         let totalQuestions = scoreByCategory.values.reduce(0) { $0 + $1.total }
 
@@ -79,19 +93,15 @@ class QuestionViewModel: ObservableObject {
     func calculateScoreByCategory() -> [Question.Category: (correct: Int, total: Int)] {
         var scoreByCategory: [Question.Category: (correct: Int, total: Int)] = [:]
         
-        // Initialisation du score de chaque catégorie
         for category in Question.Category.allCases {
             scoreByCategory[category] = (correct: 0, total: 0)
         }
 
-        // Parcours des questions et calcul des scores par catégorie
         for question in questions {
             let category = question.category
             if let selectedIndex = selectedAnswers[question.id] {
-                // Incrémente le total des questions pour cette catégorie
                 scoreByCategory[category]?.total += 1
                 
-                // Vérifie si la réponse est correcte et incrémente les bonnes réponses
                 if selectedIndex == question.correctAnswer {
                     scoreByCategory[category]?.correct += 1
                 }
@@ -104,7 +114,7 @@ class QuestionViewModel: ObservableObject {
 
 extension QuestionViewModel {
     static var preview: QuestionViewModel {
-        let vm = QuestionViewModel()
+        let vm = ViewModelFactory.makeQuestionViewModel()
         vm.questions = [
             .init(
                 id: "1",

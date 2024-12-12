@@ -16,7 +16,7 @@ struct WeekdayHeaderView: View {
             ForEach(0..<7) { index in
                 let dayName = calendar.shortWeekdaySymbols[index]
                 Text(dayName)
-                    .foregroundColor(Color(#colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1)))
+                    .foregroundStyle(Color(#colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1)))
                     .frame(maxWidth: .infinity)
             }
         }

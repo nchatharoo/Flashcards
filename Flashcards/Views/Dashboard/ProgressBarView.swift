@@ -17,7 +17,7 @@ struct ProgressBarView: View {
             Text(category.rawValue.capitalized)
                 .font(.headline)
                 .padding(.bottom, 5)
-                .foregroundColor(Color(colorScheme == .dark ? Color(#colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1)) : (Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))))
+                .foregroundStyle(Color(colorScheme == .dark ? Color(#colorLiteral(red: 0.9999960065, green: 0.9998990893, blue: 0.9968855977, alpha: 1)) : (Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))))
 
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: 10)
@@ -29,7 +29,6 @@ struct ProgressBarView: View {
             }
             .animation(.easeInOut, value: score.correct)
         }
-        .padding(.vertical, 5)
     }
     
     private func progressWidth() -> CGFloat {

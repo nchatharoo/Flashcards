@@ -45,7 +45,7 @@ struct QuestionCardView: View {
                     }
                     .frame(
                         width: geometry.size.width - 40,
-                        height: min(geometry.size.height - 40, 600) // Hauteur fixe ou max
+                        height: min(geometry.size.height - 40, 600)
                     )
                     .background(Color(#colorLiteral(red: 0, green: 0.3414323926, blue: 0.3324367404, alpha: 1)))
                     .clipShape(RoundedRectangle(cornerRadius: 20))
